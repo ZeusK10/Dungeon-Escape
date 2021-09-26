@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour,IDamageable
 {
 
     private Rigidbody2D _rigidbody;
@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer _swordSpriterenderer;
     private bool isJumping,isAttacking;
 
+    public int Health { get; set; } = 5;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
         playerAnimScript = GetComponent<PlayerAnimation>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _swordSpriterenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        
     }
 
     void Update()
@@ -119,5 +121,14 @@ public class Player : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void Damage()
+    {
+        Health--;
+        if(Health<1)
+        {
+            playerAnimScript.Dead();
+        }
     }
 }

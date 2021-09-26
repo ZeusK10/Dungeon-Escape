@@ -12,15 +12,19 @@ public abstract class Enemy : MonoBehaviour
     protected int gems;
     [SerializeField]
     protected Transform pointA, pointB;
+    protected Transform player;
+    protected bool isDead;
 
     protected Vector3 currentTarget;
     protected Animator anim;
     protected SpriteRenderer sprite;
+    protected bool isHit = false;
 
     public virtual void Init()
     {
         anim = GetComponentInChildren<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     private void Start()
@@ -28,15 +32,22 @@ public abstract class Enemy : MonoBehaviour
         Init();
     }
 
+
     public virtual void Update()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle") && anim.GetBool("InCombat")==false)
+        {
+            return;
+        }
+
+        if(isDead==false)
         {
             Movement();
         }
+        
     }
 
-    void Movement()
+    public virtual void Movement()
     {
         if (currentTarget == pointA.position)
         {
@@ -58,6 +69,29 @@ public abstract class Enemy : MonoBehaviour
             anim.SetTrigger("Idle");
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        if(isHit==false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        }
+
+
+        float distance = Vector3.Distance(transform.localPosition, player.transform.localPosition);
+        if (distance > 2)
+        {
+            isHit = false;
+            anim.SetBool("InCombat", false);
+
+        }
+        if(anim.GetBool("InCombat")==true)
+        {
+            if (player.transform.localPosition.x - transform.localPosition.x > 0)
+            {
+                sprite.flipX = false;
+            }
+            else if (player.transform.localPosition.x - transform.localPosition.x < 0)
+            {
+                sprite.flipX = true;
+            }
+        }
     }
 }
