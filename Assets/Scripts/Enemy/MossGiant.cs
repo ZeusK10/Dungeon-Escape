@@ -19,7 +19,10 @@ public class MossGiant : Enemy,IDamageable
         if (Health < 1)
         {
             isDead = true;
+            
             anim.SetTrigger("Death");
+            GameObject dmd = Instantiate(diamond, transform.position, Quaternion.identity);
+            dmd.GetComponent<Diamond>().GetValue(gems);
             this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             //Destroy(this.gameObject);
         }

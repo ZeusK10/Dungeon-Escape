@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour,IDamageable
 {
-
+    [SerializeField]
+    private int diamonds;
     private Rigidbody2D _rigidbody;
     [SerializeField]
     private float _jumpForce = 5f;
@@ -130,5 +131,10 @@ public class Player : MonoBehaviour,IDamageable
         {
             playerAnimScript.Dead();
         }
+    }
+
+    public void GetGems(int gems)
+    {
+        diamonds += gems;
     }
 }

@@ -12,6 +12,8 @@ public abstract class Enemy : MonoBehaviour
     protected int gems;
     [SerializeField]
     protected Transform pointA, pointB;
+    [SerializeField]
+    protected GameObject diamond;
     protected Transform player;
     protected bool isDead;
 

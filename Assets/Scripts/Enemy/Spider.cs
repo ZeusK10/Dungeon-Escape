@@ -24,6 +24,8 @@ public class Spider : Enemy,IDamageable
         if(Health<1)
         {
             anim.SetTrigger("Death");
+            GameObject dmd = Instantiate(diamond, transform.position, Quaternion.identity);
+            dmd.GetComponent<Diamond>().GetValue(gems);
             this.gameObject.GetComponent<BoxCollider2D>().enabled = false;
             //Destroy(this.gameObject.transform.parent.gameObject);
         }
