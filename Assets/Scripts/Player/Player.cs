@@ -15,7 +15,7 @@ public class Player : MonoBehaviour,IDamageable
     private SpriteRenderer _swordSpriterenderer;
     private bool isJumping,isAttacking;
 
-    public int Health { get; set; } = 5;
+    public int Health { get; set; }
 
     void Start()
     {
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour,IDamageable
         playerAnimScript = GetComponent<PlayerAnimation>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _swordSpriterenderer = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        
+        Health = 4;
     }
 
     void Update()
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour,IDamageable
             StartCoroutine(WaitForAttack());
         }
 
-        if (isAttacking==false)
+        if (isAttacking==false && GameManager.Instance.isPlayerDead == false)
         {
             Movement();
         }
@@ -125,15 +125,22 @@ public class Player : MonoBehaviour,IDamageable
 
     public void Damage()
     {
-        Health--;
-        if(Health<1)
+        if(GameManager.Instance.isPlayerDead==false)
         {
-            playerAnimScript.Dead();
+            Health--;
+            UIManager.Instance.UpdateLives(Health);
+            if (Health < 1)
+            {
+                GameManager.Instance.isPlayerDead = true;
+                playerAnimScript.Dead();
+            }
         }
+        
     }
 
     public void GetGems(int gems)
     {
         diamonds += gems;
+        UIManager.Instance.UpdateGemsCount(diamonds);
     }
 }

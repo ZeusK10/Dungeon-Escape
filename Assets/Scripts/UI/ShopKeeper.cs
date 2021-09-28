@@ -63,6 +63,7 @@ public class ShopKeeper : MonoBehaviour
                 GameManager.Instance.HasKeyToCastle = true;
             }
             player.diamonds -= currentItemCost;
+            UIManager.Instance.UpdateGemsCount(player.diamonds);
             UIManager.Instance.OpenShop(player.diamonds);
             itemBoughtMsg.SetActive(true);
             StartCoroutine(WaitForMsg(itemBoughtMsg));

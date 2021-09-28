@@ -28,6 +28,10 @@ public class UIManager : MonoBehaviour
     private Text playerGemCountText;
     [SerializeField]
     private Image selectionImg;
+    [SerializeField]
+    private Text gemsCountTextHUD;
+    [SerializeField]
+    private GameObject[] lives;
 
     public void OpenShop(int gemCount)
     {
@@ -37,5 +41,21 @@ public class UIManager : MonoBehaviour
     public void UpdateSelectionImage(int yPos)
     {
         selectionImg.rectTransform.anchoredPosition = new Vector2(selectionImg.rectTransform.anchoredPosition.x, yPos);
+    }
+
+    public void UpdateGemsCount(int count)
+    {
+        gemsCountTextHUD.text = "" + count;
+    }
+
+    public void UpdateLives(int life)
+    {
+         for(int i=0; i<=life; i++)
+        {
+            if(i==life)
+            {
+                lives[i].SetActive(false);
+            }
+        }
     }
 }

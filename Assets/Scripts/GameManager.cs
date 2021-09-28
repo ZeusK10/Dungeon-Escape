@@ -23,4 +23,5 @@ public class GameManager : MonoBehaviour
     }
 
     public bool HasKeyToCastle { get; set; }
+    public bool isPlayerDead;
 }
