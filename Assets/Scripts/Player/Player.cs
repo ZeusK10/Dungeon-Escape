@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour,IDamageable
 {
@@ -14,7 +15,8 @@ public class Player : MonoBehaviour,IDamageable
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _swordSpriterenderer;
     private bool isJumping,isAttacking;
-
+    [SerializeField]
+    private GameObject joystick;
     public int Health { get; set; }
 
     void Start()
@@ -29,7 +31,7 @@ public class Player : MonoBehaviour,IDamageable
     void Update()
     {
 
-        if (isJumping == true && Input.GetMouseButtonDown(0))
+        if (isJumping == true && CrossPlatformInputManager.GetButtonDown("B_Button")) 
         {
             isAttacking = true;
             playerAnimScript.Attack();
@@ -57,15 +59,17 @@ public class Player : MonoBehaviour,IDamageable
     void Movement()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && isJumping==true)
+        if ((Input.GetKeyDown(KeyCode.Space)||CrossPlatformInputManager.GetButtonDown("A_Button")) && isJumping==true)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
             playerAnimScript.Jump(true);
             StartCoroutine(CheckGroundRoutine());
         }
 
-        float horizontalInput = Input.GetAxisRaw("Horizontal") * _speed;
-        if (Input.GetKey(KeyCode.LeftShift))
+        //float horizontalInput = Input.GetAxisRaw("Horizontal") * _speed;
+        float horizontalInput = CrossPlatformInputManager.GetAxis("Horizontal");
+        float joystickPosition = joystick.GetComponent<RectTransform>().anchoredPosition.x;
+        if (Mathf.Abs(joystickPosition) > 25)
         {
             horizontalInput *= 2;
             Flip(horizontalInput);
