@@ -146,5 +146,6 @@ public class Player : MonoBehaviour,IDamageable
     {
         diamonds += gems;
         UIManager.Instance.UpdateGemsCount(diamonds);
+        UIManager.Instance.OpenShop(diamonds);
     }
 }
